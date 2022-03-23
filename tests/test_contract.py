@@ -1,31 +1,28 @@
-"""contract.cairo test file."""
-import os
-
 import pytest
+import asyncio
 from starkware.starknet.testing.starknet import Starknet
+from utils import Signer
 
-# The path to the contract source code.
-CONTRACT_FILE = os.path.join("contracts", "contract.cairo")
+signer = Signer(123456789987654321)
+L1_ADDRESS = 0x1F9840A85D5AF5BF1D1762F925BDADDC4201F984
+L2_ADDRESS = 0xD9E1CE17F2641F24AE83637AB66A2CCA9C378B9F
 
 
-# The testing library uses python's asyncio. So the following
-# decorator and the ``async`` keyword are needed.
-@pytest.mark.asyncio
-async def test_increase_balance():
-    """Test increase_balance method."""
-    # Create a new Starknet class that simulates the StarkNet
-    # system.
+@pytest.fixture(scope="module")
+def event_loop():
+    return asyncio.new_event_loop()
+
+
+@pytest.fixture(scope="module")
+async def account_factory():
     starknet = await Starknet.empty()
+    contract = await starknet.deploy("contracts/contract.cairo")
 
-    # Deploy the contract.
-    contract = await starknet.deploy(
-        source=CONTRACT_FILE,
-    )
+    return starknet, contract
 
-    # Invoke increase_balance() twice.
-    await contract.increase_balance(amount=10).invoke()
-    await contract.increase_balance(amount=20).invoke()
 
-    # Check the result of get_balance().
-    execution_info = await contract.get_balance().call()
-    assert execution_info.result == (30,)
+# @pytest.mark.asyncio
+# async def test_is_new_user(account_factory):
+#     _, contract = account_factory
+
+#     assert await contract.is_new_user(address=L2_ADDRESS).invoke() == 1

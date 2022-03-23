@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# OpenZeppelin Cairo Contracts v0.1.0 (introspection/ERC165.cairo)
+# contracts Cairo Contracts v0.1.0 (introspection/ERC165.cairo)
 
 %lang starknet
 
@@ -32,8 +32,9 @@ func ERC165_register_interface{
         pedersen_ptr: HashBuiltin*, 
         range_check_ptr
     } (interface_id: felt):
-    # Ensures interface_id is not the invalid interface_id
-    assert_not_equal(interface_id, 0xffffffff)
+    with_attr error_message("ERC165: invalid interface id"):
+        assert_not_equal(interface_id, 0xffffffff)
+    end
     ERC165_supported_interfaces.write(interface_id, TRUE)
     return ()
 end

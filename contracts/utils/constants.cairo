@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# OpenZeppelin Cairo Contracts v0.1.0 (utils/constants.cairo)
+# contracts Cairo Contracts v0.1.0 (utils/constants.cairo)
 
 %lang starknet
 
@@ -21,3 +21,11 @@ const PREFIX_TRANSACTION = 'StarkNet Transaction'
 #
 
 const UINT8_MAX = 256
+
+
+#
+# L1 Contract address
+#
+
+# TODO: Replace
+const L1_CONTRACT_ADDRESS = (0xce08635cc6477f3634551db7613cc4f36b4e49dc)
